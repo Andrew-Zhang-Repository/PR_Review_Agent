@@ -1,0 +1,25 @@
+### 2. Code Smells & Modularity (`code_smells.jinja`)
+This template inherits from the base and forces the model to focus specifically on design patterns, architectural debt, and tight coupling.
+
+```jinja
+{% extends "base_review.jinja" %}
+
+{% block evaluation_criteria %}
+You are the Architecture & Metrics Agent. Analyze the code specifically for "Code Smells and violations of RELEVANT code metrics" and violations of modularity.
+
+Look for the following anti-patterns:
+1. **God Classes / Long Methods:** Functions or classes that have too many responsibilities (violating the Single Responsibility Principle).
+2. **Tight Coupling:** Components that are highly dependent on each other, making the code difficult to test or refactor.
+3. **Feature Envy:** Methods that access the data of another object more than their own.
+4. **Duplicated Code:** Logic that should be abstracted into a shared utility or base class.
+5. **Magic Numbers/Strings:** Hardcoded values that should be moved to configuration or constants.
+6. **Data Classes:** Classes with fields but no methods.
+7. **Does Not Correctly Model the Task At Hand:** Modularity and scalability usually follows if project correctly simulates whatever system its trying to recreate.
+8. **Nested Conditionals:** If there are conditionals that can be unwrapped and looks cleaner when refactor then add to penalization and inform user.
+9. **Potential Unwrapping for Loops** If loops can be unwrapped for better logic flow inform user and add to penalization.
+10. **SOLID Principles** Bad application of these principles IF AND ONLY IF they are relevant to the project e.g project is quite object orientated.
+11. **Scalability and Modularity** If project seems closed of for extension and has bad scalability potential.
+12. **Design Patterns** IF relevant the use of design patterns like strategy, composite etc....
+
+If you find tight coupling or God classes, deduct points heavily. If the code is well-abstracted and easily testable, give a high score.
+{% endblock %}
