@@ -1,5 +1,5 @@
 {
-  "default_model": "gemma4:cloud",
+  "default_model": "gemma3:12b",
   "providers": {
     "ollama": {
       "base_url": "http://localhost:11434/v1",
@@ -7,9 +7,12 @@
       "structured_output": "json_schema",
       "extra_body": { "num_ctx": 32768 },
       "models": {
-        "qwen3.5:cloud":  { "temperature": 0.0, "top_p": 0.9 },
-        "minimax-m2.5:cloud":   { "temperature": 0.0, "top_p": 0.9 },
-        "gemma4:cloud":    { "temperature": 0.1, "top_p": 0.4 }
+        "qwen3:1.7b":  { "temperature": 0.0, "top_p": 0.9 },
+        "gemma3:1b":   { "temperature": 0.0, "top_p": 0.9 },
+        "qwen3:4b":    { "temperature": 0.1, "top_p": 0.4 },
+        "gemma3:4b":   { "temperature": 0.1, "top_p": 0.9 },
+        "gemma3:12b":  { "temperature": 0.1, "top_p": 0.9 },
+        "mistral:7b":  { "temperature": 0.1, "top_p": 0.9 }
       }
     }
   }
