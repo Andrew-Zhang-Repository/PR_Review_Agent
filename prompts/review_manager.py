@@ -1,12 +1,14 @@
 
 import os
 from typing import Dict, Optional
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment, FileSystemLoader, Template, TemplateNotFound
 
 
 class TemplateManager:
    
     def __init__(self, template_dir: str = "templates"):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        template_dir = os.path.join(current_dir, 'templates')
         self.template_dir = template_dir
         self.env = Environment(
             loader=FileSystemLoader(template_dir), trim_blocks=True, lstrip_blocks=True
@@ -49,4 +51,18 @@ class TemplateManager:
         except Exception as e:
             print(f"Error rendering template for {section_name}: {e}")
             return None
+
+    def build_prompt(self, agent_name: str, diff_content: str) -> str:
+        """
+        Loads the specific agent template and injects the git diff.
+        """
+        try:
+            template = self.env.get_template(f"{agent_name}.jinja")
+        except TemplateNotFound:
+            raise FileNotFoundError(f"Template {agent_name}.jinja not found in {self.env.loader.searchpath}")
+        
+        return template.render(
+            diff_text=diff_content,
+            enforce_json=True
+        )
 
