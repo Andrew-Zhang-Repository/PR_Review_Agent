@@ -19,8 +19,11 @@ Requirements:
 
         Highlight any "actionable_fixes" clearly using bullet points.
 
-    Format: Output ONLY Markdown. Do NOT output JSON. Do not wrap your response in markdown blocks like ```markdown. Just output the raw text.
+        Format: You MUST output a valid JSON object containing exactly one key called "markdown_comment". The value of this key should be your formatted Markdown string. Do not output conversational filler.
 
     Fatal Blocks: If any agent flagged "fatal_blocks": true, clearly state at the top of the review that the PR cannot be merged yet due to critical issues.
 
-Write the final PR comment now:
+    Example Expected Output:
+    {
+    "markdown_comment": "### Summary\n\nGreat job on this PR!...\n\n### Fixes\n- Fix line 4"
+    }

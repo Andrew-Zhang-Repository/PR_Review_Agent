@@ -4,6 +4,8 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import subprocess
 from src.evaluator import Evaluator
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def get_real_git_diff() -> str:
@@ -43,8 +45,11 @@ def main():
 
         try:
             raw_response = evaluator_default.run_review(agent_name=i, diff_content=git_diff)
-            
-            json_string = raw_response.message.content
+            if hasattr(raw_response, 'message'):
+                json_string = raw_response.message.content
+            else:
+                json_string = raw_response
+          
             parsed_json = json.loads(json_string)
             collected_reports[i] = parsed_json
     
@@ -61,11 +66,21 @@ def main():
     aggregated_json_string = json.dumps(collected_reports, indent=2)
 
     try:
-        final_markdown_review = evaluator_default.run_review(
+        final_review = evaluator_default.run_review(
             agent_name="synthesize", 
             diff_content=aggregated_json_string
         )
-        
+
+        if hasattr(final_review, 'message'):
+            json_string = final_review.message.content
+            synthesizer = json.loads(json_string)
+            final_markdown_review = synthesizer.get("markdown_comment", "Error: AI did not provide a 'markdown_comment' key.")
+       
+        # write to path of markdown
+        write_path = os.path.join(PROJECT_ROOT,"markdown_output.md")
+        with open(write_path, "w", encoding="utf-8") as file:
+            file.write(final_markdown_review)
+
         print("==========================================")
         print("FINAL SYNTHESIZED PR COMMENT")
         print("==========================================")
