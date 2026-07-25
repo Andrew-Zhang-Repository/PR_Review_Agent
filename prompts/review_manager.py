@@ -19,10 +19,11 @@ class TemplateManager:
     def _load_templates(self):
         """Load all available templates."""
         template_files = {
-            "base": "base_review.jinja",
-            "metrics": "code_smells_and_metrics.jinja",
-            "readability": "readability_review.jinja",
-            "security": "security_review.jinja",
+            "base_review": "base_review.jinja",
+            "code_smells_and_metrics": "code_smells_and_metrics.jinja",
+            "readability_review": "readability_review.jinja",
+            "security_review": "security_review.jinja",
+            "synthesize": "synthesize.jinja"
         }
 
         for section_name, filename in template_files.items():

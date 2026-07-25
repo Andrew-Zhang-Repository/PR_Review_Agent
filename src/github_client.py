@@ -1,6 +1,6 @@
 import os
 import sys
-
+import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import subprocess
 from src.evaluator import Evaluator
@@ -29,14 +29,60 @@ def get_real_git_diff() -> str:
 def main():
     print("Starting End-to-End Evaluator Test...\n")
     
-    mock_git_diff = get_real_git_diff()
+    git_diff = get_real_git_diff()
+
+    evaluator_default = Evaluator()
+    agents = evaluator_default.template_manager.get_available_sections()
+    collected_reports = {}
+    has_fatal_block = False
+    
+    for i in agents:
+
+        if i == "base_review" or i == "synthesize":
+            continue 
+
+        try:
+            raw_response = evaluator_default.run_review(agent_name=i, diff_content=git_diff)
+            
+            json_string = raw_response.message.content
+            parsed_json = json.loads(json_string)
+            collected_reports[i] = parsed_json
+    
+            if parsed_json.get("fatal_blocks") is True:
+                has_fatal_block = True
+            print(f"{i.capitalize()} finished. Score: {parsed_json.get('score')}/100")
+        except json.JSONDecodeError:
+            print(f"{i.capitalize()} Agent failed to return valid JSON. Skipping.")
+        except Exception as e:
+            print(f"{i.capitalize()} Agent failed: {e}")
+
+    print("\nStitching agent reports together...\n")
+    
+    aggregated_json_string = json.dumps(collected_reports, indent=2)
 
     try:
-        evaluator_default = Evaluator()
-        result_1 = evaluator_default.run_review(agent_name="code_smells_and_metrics", diff_content=mock_git_diff)
-        print(f"Result:\n{result_1}\n")
+        final_markdown_review = evaluator_default.run_review(
+            agent_name="synthesize", 
+            diff_content=aggregated_json_string
+        )
+        
+        print("==========================================")
+        print("FINAL SYNTHESIZED PR COMMENT")
+        print("==========================================")
+        print(final_markdown_review)
+        print("==========================================")
+        
+        if has_fatal_block:
+            print("\nCOMMIT BLOCKED: A fatal security or architecture flaw was detected or error reading responses from agents.")
+            sys.exit(1)
+        else:
+            print("\nCOMMIT APPROVED.")
+            sys.exit(0)
+            
     except Exception as e:
-        print(f"Default Evaluator failed: {e}")
+        print(f"Synthesizer failed: {e}")
 
 
+
+    
 print(main())
