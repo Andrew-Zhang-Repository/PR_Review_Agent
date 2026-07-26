@@ -33,7 +33,7 @@ ollama pull gemma3:12b
 Run from the root of any git repository you want to review:
 
 ```bash
-ollama-review -m # any available model
+ollama-review -m AVAILABLE_MODEL -p MODEL_PARAMS
 ```
 
 Specify a different model:
