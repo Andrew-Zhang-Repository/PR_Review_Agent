@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ollama-local-reviewer"
-version = "1.0.1" 
+version = "1.0.3" 
 description = "A local multi-agent code reviewer" 
 dependencies = [ "pyyaml", "jinja2", "ollama" ]
 readme = "README.md"
