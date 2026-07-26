@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: ollama-reviewer
+Version: 1.0.0
+Summary: A local multi-agent code reviewer
+Requires-Dist: pyyaml
+Requires-Dist: jinja2
+Requires-Dist: ollama

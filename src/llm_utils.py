@@ -2,9 +2,8 @@
 Utility functions for LLM providers.
 """
 
-import logging
-from typing import Any, Dict, Optional
-from model_select import OllamaProvider
+from typing import Any
+from src.model_select import OllamaProvider
 
 
 

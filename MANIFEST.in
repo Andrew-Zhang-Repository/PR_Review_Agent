@@ -1,0 +1,2 @@
+include providers.yml
+recursive-include prompts/templates *.j2

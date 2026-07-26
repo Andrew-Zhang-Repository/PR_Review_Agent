@@ -1,36 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-import yaml
 from typing import List, Optional, Dict, Tuple, Any, Protocol, runtime_checkable
 
-with open("providers.yml", "r") as file:
-    config = yaml.safe_load(file)
-
-
-class ModelProvider(Enum):
-    OLLAMA = "ollama"
-    DEFAULT_MODEL = config["default_model"]
-
-
-class LLMBackend(ABC):
-    @abstractmethod
-    def generate(self, prompt: str) -> str:
-        pass
-    
-   
-class gemma312b(LLMBackend):
-    def generate(self, prompt: str) -> str:
-        return "Gemma3 12b model"
-        
-
-class gemma34b(LLMBackend):
-    def generate(self, prompt: str) -> str:
-        return "Gemma3 4b model"
-
-
-class qwen34b(LLMBackend):
-    def generate(self, prompt: str) -> str:
-        return "Qwen3 4b model"
         
 class OllamaProvider:
     """Ollama LLM provider implementation."""

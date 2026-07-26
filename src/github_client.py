@@ -1,11 +1,10 @@
 import os
 import sys
 import json
+from src.evaluator import Evaluator
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import subprocess
-from src.evaluator import Evaluator
-from pathlib import Path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_real_git_diff() -> str:
@@ -28,12 +27,12 @@ def get_real_git_diff() -> str:
         print("it is not installed or not found in the system path.")
         sys.exit(1)
 
-def main():
+def activate_agents(model_name,params):
     print("Starting End-to-End Evaluator Test...\n")
     
     git_diff = get_real_git_diff()
 
-    evaluator_default = Evaluator()
+    evaluator_default = Evaluator(model_name,params)
     agents = evaluator_default.template_manager.get_available_sections()
     collected_reports = {}
     has_fatal_block = False
@@ -100,4 +99,3 @@ def main():
 
 
     
-print(main())

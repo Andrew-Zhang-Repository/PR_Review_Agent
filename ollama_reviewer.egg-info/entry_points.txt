@@ -1,0 +1,2 @@
+[console_scripts]
+ollama-review = src.driver:main
