@@ -1,2 +1,2 @@
-include providers.yml
-recursive-include prompts/templates *.jinja
+include ollama_local_reviewer/providers.yml
+recursive-include ollama_local_reviewer/prompts/templates *.jinja

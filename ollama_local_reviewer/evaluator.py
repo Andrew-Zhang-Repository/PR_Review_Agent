@@ -1,10 +1,9 @@
-
 import yaml
 import os
 import sys
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(BASE_DIR)
-from prompts.review_manager import TemplateManager
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from ollama_local_reviewer.prompts.review_manager import TemplateManager
 CONFIG_PATH = os.path.join(BASE_DIR, "providers.yml")
 with open(CONFIG_PATH, "r") as file:
     config = yaml.safe_load(file)
@@ -13,7 +12,7 @@ print(BASE_DIR,CONFIG_PATH)
 DEFAULT_MODEL = config["default_model"]
 DEFAULT_PROVIDER = "ollama"
 DEFAULT_MODEL_PARAMETERS = config["providers"][DEFAULT_PROVIDER]["models"][DEFAULT_MODEL]
-from src.llm_utils import initialize_llm_provider
+from ollama_local_reviewer.llm_utils import initialize_llm_provider
 
 class Evaluator:
     def __init__(self, model_name: str = DEFAULT_MODEL, model_params: dict = None):

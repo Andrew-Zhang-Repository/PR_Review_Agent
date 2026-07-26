@@ -1,9 +1,11 @@
 import os
 import sys
 import json
-from src.evaluator import Evaluator
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import requests
 import subprocess
+from ollama_local_reviewer.evaluator import Evaluator
+from typing import List, Dict
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -76,7 +78,7 @@ def activate_agents(model_name,params):
             final_markdown_review = synthesizer.get("markdown_comment", "Error: AI did not provide a 'markdown_comment' key.")
        
         # write to path of markdown
-        write_path = os.path.join(PROJECT_ROOT,"markdown_output.md")
+        write_path = os.path.join(os.getcwd(),"markdown_output.md")
         with open(write_path, "w", encoding="utf-8") as file:
             file.write(final_markdown_review)
 

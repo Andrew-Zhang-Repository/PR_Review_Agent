@@ -4,13 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ollama-local-reviewer"
-version = "1.0.3" 
+version = "1.0.5" 
 description = "A local multi-agent code reviewer" 
 dependencies = [ "pyyaml", "jinja2", "ollama" ]
 readme = "README.md"
 
 [project.scripts]
-ollama-review = "src.driver:main"
+ollama-review = "ollama_local_reviewer.driver:main"
 
 [tool.setuptools]
-packages = ["src", "prompts"]
+packages = ["ollama_local_reviewer", "ollama_local_reviewer.prompts"]
+
+[tool.setuptools.package-data]
+"ollama_local_reviewer" = ["*.yml"]
+"ollama_local_reviewer.prompts" = ["templates/*.jinja"]

@@ -11,7 +11,7 @@ The tool runs several specialised review agents against your staged/unstaged cod
 3. **Security Review** — checks for common vulnerabilities and insecure patterns
 4. **Synthesizer** — stitches the individual agent reports into a single markdown PR comment
 
-Each agent returns a JSON score out of 100. If any agent detects a fatal block (security flaw or architecture issue), the commit is blocked with exit code 1.
+Each agent returns a JSON score out of 100. If any agent detects a fatal block (security flaw or architecture issue), the commit is blocked with exit code 1. But users can commit whether or not they care about the pr check. After all agents is ran an md file consisting of the reviews will be available in whatever directory the command was ran. 
 
 ## Requirements
 
@@ -47,10 +47,10 @@ Model parameters (temperature, top_p) are configured in `providers.yml`.
 ## Output
 
 - Prints each agent's score as it runs
-- Writes a final synthesised markdown review to `markdown_output.md`
+- Writes a final synthesised markdown review to `markdown_output.md` to the directory in which the review command was executed
 - Exits with code 0 on approval, code 1 if a fatal issue is found
 
-## Available models in providers.yml, feel free to add your on
+## Available models in providers.yml, feel free to add your own by looking through the package
 - "qwen3:1.7b":  { "temperature": 0.0, "top_p": 0.9 },
 - "gemma3:1b":   { "temperature": 0.0, "top_p": 0.9 },
 - "qwen3:4b":    { "temperature": 0.1, "top_p": 0.4 },

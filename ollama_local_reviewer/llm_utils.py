@@ -3,7 +3,8 @@ Utility functions for LLM providers.
 """
 
 from typing import Any
-from src.model_select import OllamaProvider
+import os
+from ollama_local_reviewer.model_select import OllamaProvider
 
 
 
