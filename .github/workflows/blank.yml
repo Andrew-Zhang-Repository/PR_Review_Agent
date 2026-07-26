@@ -1,4 +1,4 @@
-teps:
+steps:
 - uses: actions/checkout@v4
 
 - name: Set up Python
@@ -16,6 +16,5 @@ teps:
   
 - name: Publish to PyPI
   env:
-    TWINE_USERNAME: __token__
-    TWINE_PASSWORD: ${{ secrets.pypi}}
+    TWINE_PASSWORD: ${{ secrets.pypi }}
   run: twine upload dist/*
