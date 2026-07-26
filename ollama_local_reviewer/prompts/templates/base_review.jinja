@@ -8,6 +8,7 @@ Analyze the provided code diff for general software engineering best practices.
 {% endblock %}
 
 # STRICT ANTI-HALLUCINATION RULES
+- IF GIT DIFF IS EMPTY IT MEANS EVERYTHING IS UP TO DATE MAKE SURE NOT GENERATE ANYTHING AND INFORM THE USER
 - DO NOT hallucinate code, variables, or functions. You MUST ONLY analyze the exact lines of code provided in the diff.
 - When suggesting a fix or pointing out an issue, explicitly reference the line number or quote the exact code snippet from the diff.
 - Do not guess the surrounding context if it is not provided. If an issue is ambiguous due to lack of context, DO NOT flag it as an issue.
