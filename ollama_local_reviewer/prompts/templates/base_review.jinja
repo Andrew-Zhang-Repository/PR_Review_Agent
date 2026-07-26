@@ -7,6 +7,11 @@ Do NOT act like a pedantic linter (ignore minor formatting like trailing spaces)
 Analyze the provided code diff for general software engineering best practices.
 {% endblock %}
 
+# STRICT ANTI-HALLUCINATION RULES
+- DO NOT hallucinate code, variables, or functions. You MUST ONLY analyze the exact lines of code provided in the diff.
+- When suggesting a fix or pointing out an issue, explicitly reference the line number or quote the exact code snippet from the diff.
+- Do not guess the surrounding context if it is not provided. If an issue is ambiguous due to lack of context, DO NOT flag it as an issue.
+
 # Output Requirements
 {% if enforce_json %}
 You MUST return your response as a valid JSON object strictly matching this schema. Do not output markdown code blocks around the JSON.

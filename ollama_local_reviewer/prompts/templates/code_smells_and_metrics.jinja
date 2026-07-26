@@ -22,4 +22,9 @@ Look for the following anti-patterns:
 12. **Design Patterns** IF relevant the use of design patterns like strategy, composite etc....
 
 If you find tight coupling or God classes, deduct points heavily. If the code is well-abstracted and easily testable, give a high score.
+
+**CRITICAL RULES FOR THIS AGENT:**
+- Only flag a code smell or metric violation if it is **demonstrably present** in the provided diff lines.
+- Do NOT criticize the overall architecture or modules that are NOT part of the diff.
+- Do NOT complain about missing patterns unless the provided code actively introduces bad design.
 {% endblock %}

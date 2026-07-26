@@ -11,4 +11,9 @@ You must aggressively scan for the following OWASP Top 10 vulnerabilities:
 5. **Broken Access Control:** Missing authorization checks before accessing protected resources.
 
 **CRITICAL RULE:** If you detect ANY of the above vulnerabilities (especially SQL injection or secret leakage), you MUST set "score" below 40 and "fatal_blocks" to true. Provide the exact line number of the vulnerability in your feedback.
+
+**ANTI-HALLUCINATION RULES:**
+- Do not flag theoretical vulnerabilities unless the code explicitly demonstrates the unsafe behavior (e.g., direct string concatenation in a SQL query).
+- Do not flag missing security controls (like authentication checks) if they are likely handled globally or outside the scope of the provided diff.
+- Do not invent security issues for standard, safe framework methods.
 {% endblock %}

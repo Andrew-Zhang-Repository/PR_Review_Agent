@@ -10,4 +10,9 @@ Evaluate based on:
 4. **Cognitive Load:** Is the logic overly clever or dense? Prefer readable code over "clever" one-liners.
 
 Suggest specific renames or structural flattening where appropriate.
+
+**CRITICAL RULES FOR THIS AGENT:**
+- ONLY suggest renames for variables or functions that are actively declared, modified, or heavily used in the provided diff.
+- DO NOT invent variables that aren't in the text.
+- Ignore standard framework conventions (like `ctx`, `req`, `res`) even if they seem short.
 {% endblock %}

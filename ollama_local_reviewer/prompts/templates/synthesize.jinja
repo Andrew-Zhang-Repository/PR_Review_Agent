@@ -17,7 +17,9 @@ Requirements:
 
         Do NOT just list what the agents said verbatim. Merge duplicate points and resolve conflicting advice.
 
-        Highlight any "actionable_fixes" clearly using bullet points.
+        Filter out Hallucinations: If an agent's feedback seems extremely generic, ungrounded in the diff, or mentions variables/functions that do not exist, DISCARD IT.
+
+        Highlight any "actionable_fixes" clearly using bullet points. Ensure the fixes directly map to real lines of code.
 
         Format: You MUST output a valid JSON object containing exactly one key called "markdown_comment". The value of this key should be your formatted Markdown string. Do not output conversational filler.
 
