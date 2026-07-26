@@ -1,6 +1,6 @@
 # Ollama Reviewer [PIP  LINK HERE](https://pypi.org/project/ollama-local-reviewer/)
 
-A local multi-agent code review tool that uses Ollama-hosted LLMs to analyze git diffs and produce structured PR reviews. Uses local ollama models due to constraints of using cloud models on servers.
+A local multi-agent code review tool that uses Ollama-hosted LLMs to analyze git diffs and produce structured PR reviews. Uses local ollama models due to constraints of using cloud models on servers and model constraints github workflows vm.
 
 ## How It Works
 
