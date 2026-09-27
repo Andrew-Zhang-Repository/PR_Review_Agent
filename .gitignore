@@ -3,3 +3,4 @@ __pycache__
 markdown_output.md
 ollama_local_reviewer.egg-info/
 dist/
+.chroma
