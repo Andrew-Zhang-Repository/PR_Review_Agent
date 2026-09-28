@@ -101,6 +101,33 @@ def index_codebase(repo_path=None):
 
     print("Codebase successfully indexed.")
 
+def inspect_db():
+    client = chromadb.PersistentClient(path="./.chroma")
+    collection = client.get_collection(name="codebase", embedding_function=ollama_ef)
+
+    total = collection.count()
+    
+
+    if total == 0:
+        return "No files were found"
+
+    files = collection.get(limit=total)
+    for i in range(len(files['ids'])):
+        file_id = files['ids'][i]
+        metadata = files['metadatas'][i]
+        document = files['documents'][i]
+        
+        doc_preview = document[:250].replace('\n', ' ') + "..." if len(document) > 250 else document
+
+        # feed meta data, file path, and code document to llm agent
+
+        """
+        print(f"\nFile ID (Path): {file_id}")
+        print(f"Metadata:       {metadata}")
+        print(f"Code Preview:   {doc_preview}")
+        print("-" * 40)
+        """
+
 """def main():
     parser = argparse.ArgumentParser(description="Driver script to run evaluator")
     parser.add_argument("-m", "--model", type=str, help="Model choice")
@@ -116,4 +143,4 @@ def index_codebase(repo_path=None):
 if __name__ == "__main__":
     main()
 """
-index_codebase()
+# inspect_db()
