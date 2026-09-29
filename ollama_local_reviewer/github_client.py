@@ -6,6 +6,16 @@ import subprocess
 from ollama_local_reviewer.evaluator import Evaluator
 from typing import List, Dict
 
+
+from pathlib import Path
+from pathspec import PathSpec
+from pathspec.patterns import GitWildMatchPattern
+import subprocess
+
+current_dir = Path(__file__).parent
+root_dir = current_dir.parent 
+file_path = root_dir / ".gitignore"
+
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def get_full_diff(git_root):
@@ -46,7 +56,15 @@ def is_text_file(filepath, blocksize=512):
     except Exception:
         return False
 
+def load_gitignore(gitignore_path=file_path):
 
+    if not os.path.exists(gitignore_path):
+        return PathSpec.from_lines(GitWildMatchPattern, [])
+    
+    with open(gitignore_path, "r", encoding="utf-8") as file:
+        lines = file.read().splitlines()
+        
+    return lines
 
 def get_git_root():
     try:
@@ -58,6 +76,21 @@ def get_git_root():
         return root
     except subprocess.CalledProcessError:
         return "."
+    
+def get_current_commit():
+    return subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+
+def get_changed_files(old_commit, new_commit):
+    output = subprocess.check_output(
+        ['git', 'diff', '--name-status', old_commit, new_commit], 
+        text=True
+    )
+    changes = []
+    for line in output.strip().split('\n'):
+        if line:
+            status, path = line.split('\t')
+            changes.append((status, path))
+    return changes
 
 def get_real_git_diff() -> str:
    
@@ -78,6 +111,9 @@ def get_real_git_diff() -> str:
     except FileNotFoundError:
         print("it is not installed or not found in the system path.")
         sys.exit(1)
+
+
+
 
 def activate_agents(model_name,params):
     print("Starting End-to-End Evaluator Test...\n")
