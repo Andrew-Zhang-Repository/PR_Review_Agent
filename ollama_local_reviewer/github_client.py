@@ -8,6 +8,56 @@ from typing import List, Dict
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+def get_full_diff(git_root):
+    try:
+        diff_text = subprocess.check_output(
+            ['git', 'diff', 'HEAD'], text=True, cwd=git_root
+        )
+    except subprocess.CalledProcessError:
+        diff_text = ""
+
+    untracked = subprocess.check_output(
+        ['git', 'ls-files', '--others', '--exclude-standard'], 
+        text=True, cwd=git_root
+    ).strip().split('\n')
+
+    for file in untracked:
+        if not file: continue
+        abs_path = os.path.join(git_root, file)
+        
+        if is_text_file(abs_path):
+            with open(abs_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            diff_text += f"\n--- /dev/null\n+++ b/{file}\n"
+            diff_text += "\n".join([f"+{line}" for line in content.split('\n')])
+            diff_text += "\n"
+
+    return diff_text
+
+
+def is_text_file(filepath, blocksize=512):
+    try:
+        with open(filepath, 'rb') as f:
+            chunk = f.read(blocksize)
+            if b'\0' in chunk:
+                return False
+            return True
+    except Exception:
+        return False
+
+
+
+def get_git_root():
+    try:
+        root = subprocess.check_output(
+            ['git', 'rev-parse', '--show-toplevel'], 
+            text=True, 
+            stderr=subprocess.DEVNULL
+        ).strip()
+        return root
+    except subprocess.CalledProcessError:
+        return "."
 
 def get_real_git_diff() -> str:
    
