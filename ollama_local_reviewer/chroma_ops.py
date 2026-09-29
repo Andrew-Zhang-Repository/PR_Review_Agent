@@ -132,7 +132,8 @@ def sync_database(collection, repo_path=None):
     with open(tracker_file, 'w') as f:
         f.write(current_commit)
 
-# needs further testing
+# needs further testing reutrns ten by default find way to cover all thats been modified
+# Rag retrieval set to n files : retrieve n files that are the most similiar to what you have changed in the git diff/codebase and let rag retrieval retrieve the top n similiar to give the agent context.
 def get_codebase_context(collection, diff_text):
     if not diff_text.strip():
         return ""
