@@ -3,7 +3,7 @@ import sys
 import json
 import requests
 import subprocess
-from ollama_local_reviewer.evaluator import Evaluator
+#from ollama_local_reviewer.evaluator import Evaluator
 from typing import List, Dict
 
 

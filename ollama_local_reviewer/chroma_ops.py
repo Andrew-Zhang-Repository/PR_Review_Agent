@@ -5,7 +5,7 @@ import argparse
 import chromadb
 from chromadb.utils import embedding_functions
 import yaml
-from github_client import load_gitignore,is_text_file,get_git_root, get_current_commit, get_changed_files
+from github_client import load_gitignore,is_text_file,get_git_root, get_current_commit, get_changed_files, get_full_diff
 
 
 
@@ -131,3 +131,37 @@ def sync_database(collection, repo_path=None):
                 
     with open(tracker_file, 'w') as f:
         f.write(current_commit)
+
+# needs further testing
+def get_codebase_context(collection, diff_text):
+    if not diff_text.strip():
+        return ""
+        
+    results = collection.query(
+        query_texts=[diff_text]
+    )
+    
+    if not results['documents'] or not results['documents'][0]:
+        return "No relevant context found."
+
+    context_blocks = []
+    for metadata, doc in zip(results['metadatas'][0], results['documents'][0]):
+        filepath = metadata.get('filepath', 'Unknown')
+        context_blocks.append(f"--- START FILE: {filepath} ---\n{doc}\n--- END FILE ---")
+        
+    return "\n\n".join(context_blocks)
+
+
+git_root = get_git_root()
+sync_database(collection, repo_path=git_root)
+
+
+diff_text = get_full_diff(git_root)
+
+
+if not diff_text.strip():
+    print("No changes detected. Exiting.")
+
+context = get_codebase_context(collection, diff_text)
+
+print(context)
