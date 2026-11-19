@@ -5,6 +5,7 @@ import requests
 import subprocess
 #from ollama_local_reviewer.evaluator import Evaluator
 from typing import List, Dict
+import re
 
 
 from pathlib import Path
@@ -186,4 +187,28 @@ def activate_agents(model_name,params):
 
 
 
-    
+
+def split_diff(diff_text,git_root):
+
+    file_diffs = {}
+    chunks = re.split(r'(?=^diff --git |^--- /dev/null)', diff_text, flags=re.MULTILINE)
+
+    for i in chunks:
+
+        if i.strip() == False:
+            continue
+
+        match = re.search(r'^\+\+\+ b/(.+)$', i, flags=re.MULTILINE)
+        if match:
+            rel_path = match.group(1).strip()
+            abs_path = os.path.normpath(os.path.join(git_root, rel_path))
+            file_diffs[abs_path] = i
+
+
+    return file_diffs
+
+
+"""diff_text = get_full_diff(get_git_root())
+
+print(split_diff(diff_text,get_git_root()))
+"""

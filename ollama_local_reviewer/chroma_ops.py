@@ -139,7 +139,8 @@ def get_codebase_context(collection, diff_text):
         return ""
         
     results = collection.query(
-        query_texts=[diff_text]
+        query_texts=[diff_text],
+        n_results = 3
     )
     
     if not results['documents'] or not results['documents'][0]:
