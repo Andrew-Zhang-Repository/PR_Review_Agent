@@ -207,8 +207,44 @@ def split_diff(diff_text,git_root):
 
     return file_diffs
 
+def get_codebase_context(collection, diff_text, git_root, per_file_k=2, max_total_files=3, max_distance=0.6):
+    if not diff_text.strip():
+        return ""
 
-"""diff_text = get_full_diff(get_git_root())
+    file_diffs = split_diff(diff_text, git_root)
+    if not file_diffs:
+        return "No relevant context found."
 
-print(split_diff(diff_text,get_git_root()))
-"""
+    modified_paths = list(file_diffs.keys())
+    query_chunks = list(file_diffs.values())
+
+    results = collection.query(
+        query_texts=query_chunks,
+        n_results=per_file_k,
+        where={"filepath": {"$nin": modified_paths}},
+        include=["documents", "metadatas", "distances"]
+    )
+
+    best_matches = {} 
+    
+    for docs, metas, dists in zip(results["documents"], results["metadatas"], results["distances"]):
+        for doc, meta, dist in zip(docs, metas, dists):
+            if dist > max_distance:
+                continue
+            filepath = meta.get("filepath", "Unknown")
+            if filepath not in best_matches or dist < best_matches[filepath][0]:
+                best_matches[filepath] = (dist, doc)
+
+    if not best_matches:
+        return "No relevant context found."
+
+
+    top_matches = sorted(best_matches.items(), key=lambda x: x[1][0])[:max_total_files]
+
+    context_blocks = [
+        f"--- START FILE: {filepath} ---\n{doc}\n--- END FILE ---"
+        for filepath, (_, doc) in top_matches
+    ]
+
+    return "\n\n".join(context_blocks)
+
