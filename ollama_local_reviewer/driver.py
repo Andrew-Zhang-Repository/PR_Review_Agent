@@ -1,15 +1,11 @@
-import os
-import sys
-#from ollama_local_reviewer.github_client import activate_agents
+from ollama_local_reviewer.chroma_ops import activate_agents
 import argparse
-import chromadb
-from chromadb.utils import embedding_functions
-import yaml
 
 
 
 
-"""def main():
+
+def main():
     parser = argparse.ArgumentParser(description="Driver script to run evaluator")
     parser.add_argument("-m", "--model", type=str, help="Model choice")
     parser.add_argument("-p", "--parameters", type=dict, help="Model Parameters")
@@ -23,5 +19,5 @@ import yaml
 
 if __name__ == "__main__":
     main()
-"""
-# inspect_db()
+
+
