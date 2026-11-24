@@ -17,6 +17,7 @@
     }
   },
   "EMBEDDED_URL": "http://localhost:11434/api/embeddings",
-  "EMBED_MODEL": "nomic-embed-text"
+  "EMBED_MODEL": "nomic-embed-text",
+  "MAX_CONCURRENT_AGENTS": 1
 
 }
